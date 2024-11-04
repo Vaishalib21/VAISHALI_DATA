@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NON LINEAR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dark background */
+            color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Make sure body takes full viewport height */
+        }
+
+        header {
+            background-color: #1e1e1e;
+            width: 100%;
+            padding: 1em 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em; /* Reduced font size for better fit */
+        }
+
+        .container {
+            display: flex;
+            width: 85%;
+            margin: 30px auto;
+            gap: 20px;
+            flex: 1; /* Allow the container to grow and push footer down */
+overflow:hidden;
+        }
+
+        .categories {
+            flex: 0 0 250px; /* Increased width for categories */
+            background-color: #1f1f1f;
+            padding: 15px; /* Adjusted padding */
+            border-radius: 15px;
+            border: 2px solid #ffcc00;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-size: 1.1em; /* Slightly reduced font size */
+            overflow-y: auto; /* Enable scrolling if content overflows */
+            max-height: 400px; /* Limit height for better layout */
+        }
+
+        .categories h1 {
+            color: #ffcc00;
+            font-size: 1.8em; /* Increased header size */
+            margin-bottom: 15px; /* Space below header */
+        }
+
+        .categories ul {
+            padding: 0; /* Remove default padding */
+            list-style-type: none; /* Remove bullets */
+        }
+
+        .categories li {
+            margin-bottom: 15px; /* Increased space between items */
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 1.2em; /* Increased font size for method names */
+        }
+
+        .categories li:hover {
+            color: #ffcc00; /* Highlight on hover */
+        }
+
+        .code-output {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            gap: 20px;
+        }
+
+        .code-frame, .output-frame {
+            background-color: #1f1f1f;
+            padding: 20px; /* Increased padding for better spacing */
+            border-radius: 15px;
+            border: 2px solid #ffcc00;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            flex: 1;
+            font-size: 1.1em; /* Adjusted font size */
+            overflow: auto; /* Enable scrolling if content overflows */
+            max-height: 300px; /* Limit height for better layout */
+        }
+h2{
+color: #ffcc00;
+}
+        textarea {
+            width: 100%;
+            height: 220px; /* Increased height for textarea */
+            background-color: #2c2c2c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            resize: none; /* Prevent resizing */
+            font-family: 'Courier New', Courier, monospace;
+            overflow: auto; /* Enable scrolling */
+            outline: none;
+            box-sizing: border-box; /* Include padding in height */
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .tabs {
+            display: flex;
+            margin: 20px 0;
+            border-bottom: 2px solid #ffcc00;
+        }
+
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1;
+            text-align: center;
+            font-size: 1em;
+            border: 2px solid transparent;
+            border-top: 2px solid #ffcc00;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab:hover {
+            background-color: #333;
+            border-color: #ffcc00;
+        }
+
+        footer {
+            margin-top: auto; /* Push footer to the bottom */
+            background-color: #1e1e1e;
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 1em 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NON LINEAR EQUATION</h1>
+        <div class="tabs">
+            <div class="tab" onclick="location.href='conversion.html'"><b>CONVERSION</b></div>
+            <div class="tab" onclick="location.href='nonlinear.html'"><b>NON LINEAR EQUATIONS</b></div>
+            <div class="tab" onclick="location.href='linear.html'"><b>LINEAR EQUATIONS</b></div>
+            <div class="tab" onclick="location.href='interpolation.html'"><b>INTERPOLATION</b></div>
+            <div class="tab" onclick="location.href='numericalintegration.html'"><b>NUMERICAL INTEGRATION</b></div>
+            <div class="tab" onclick="location.href='approximation.html'"><b>APPROXIMATION</b></div>
+            <div class="tab" onclick="location.href='ordinary.html'"><b>ORDINARY DIFFERENTIAL EQUATIONS</b></div>       
+</div>
+    </header>
+    <div class="container">
+        <div class="categories">
+            <h1>METHODS</h1>
+            <ol type=1>
+                <li onclick="toggleCode(0)"><b>Bisection</b></li>
+                <li onclick="toggleCode(1)"><b>Regula-Falsi</b></li>
+                <li onclick="toggleCode(2)"><b>Secant</b></li>
+                <li onclick="toggleCode(3)"><b>Newton Raphson</b></li>
+                <li onclick="toggleCode(4)"><b>Bierge-Vieta</b></li>
+            </ol>
+        </div>
+
+        <div class="code-output" id="code-output-0">
+            <div class="code-frame">
+                <h2>1. Code</h2>
+                <textarea readonly>
+//BISECTION METHOD
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+ float a,b,fx1,x,x0=0;
+ int i=1,y=0;
+ printf("Enter a and b:");
+ scanf("%f%f",&a,&b);
+ do
+ {
+  x=(a+b)/2;
+  printf("\n\n%d iteration:",i);
+  printf("\na=%f b=%f",a,b);
+  fx1=(x*x)-2;
+  if(fx1<0)
+  {
+   a=x;
+  }
+  else if(fx1>0)
+  {
+   b=x;
+  }
+  printf("\nx%d=%f",i,x);
+  printf("\nf(x%d)=%f",i,fx1);
+  printf("\nDifference of: x%d-x%d=%f",i,y,fabs(x-x0));
+  if(fabs(x-x0)<=0.02)
+  {
+      printf("\n\nReal root of equation is: %f",x);
+      break;
+  }
+  x0=x;
+  ++i;
+  ++y;
+ }while(fabs(x-x0)<=0.02);
+}
+                </textarea>
+            </div>
+            <div class="output-frame">
+                <h2>Output</h2>
+                <textarea readonly>
+Enter a and b:1 1.5
+
+
+1 iteration:
+a=1.000000 b=1.500000
+x1=1.250000
+f(x1)=-0.437500
+Difference of: x1-x0=1.250000
+
+2 iteration:
+a=1.250000 b=1.500000
+x2=1.375000
+f(x2)=-0.109375
+Difference of: x2-x1=0.125000
+
+3 iteration:
+a=1.375000 b=1.500000
+x3=1.437500
+f(x3)=0.066406
+Difference of: x3-x2=0.062500
+
+4 iteration:
+a=1.375000 b=1.437500
+x4=1.406250
+f(x4)=-0.022461
+Difference of: x4-x3=0.031250
+
+5 iteration:
+a=1.406250 b=1.437500
+x5=1.421875
+f(x5)=0.021729
+Difference of: x5-x4=0.015625
+
+Real root of equation is: 1.421875
+                </textarea>
+            </div>
+        </div>
+
+        <div class="code-output" id="code-output-1">
+            <div class="code-frame">
+                <h2>2. Code</h2>
+                <textarea readonly>
+//REGULA FALSI METHOD
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+ float a,b,fx1,x,x0=0;
+ int i=1,y=0;
+ printf("Enter a and b:");
+ scanf("%f%f",&a,&b);
+ do
+ {
+  float fa=(a*a*a)-(2*a)-5;
+  float fb=(b*b*b)-(2*b)-5;
+  x=(a*fb-b*fa)/(fb-fa);
+  printf("\n\n%d iteration:",i);
+  printf("\na=%f b=%f",a,b);
+  fx1=(x*x*x)-(2*x)-5;
+  if(fx1<0)
+  {
+   a=x;
+  }
+  else if(fx1>0)
+  {
+   b=x;
+  }
+  printf("\nx%d=%f",i,x);
+  printf("\nf(x%d)=%f",i,fx1);
+  printf("\nDifference of: x%d-x%d=%f",i,y,fabs(x-x0));
+  if(fabs(x-x0)<=0.02)
+  {
+      printf("\n\nReal root of equation is: %f",x);
+      break;
+  }
+  x0=x;
+  ++i;
+  ++y;
+ }while(fabs(x-x0)<=0.02);
+}
+                </textarea>
+            </div>
+            <div class="output-frame">
+                <h2>Output</h2>
+                <textarea readonly>
+Enter a and b:2 2.5
+
+
+1 iteration:
+a=2.000000 b=2.500000
+x1=2.075472
+f(x1)=-0.210679
+Difference of: x1-x0=2.075472
+
+2 iteration:
+a=2.075472 b=2.500000
+x2=2.090798
+f(x2)=-0.041807
+Difference of: x2-x1=0.015326
+
+Real root of equation is: 2.090798
+                </textarea>
+            </div>
+        </div>
+
+        <div class="code-output" id="code-output-2">
+            <div class="code-frame">
+                <h2>3. Code</h2>
+                <textarea readonly>
+//SECANT METHOD
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+ float a,b,fx1,x,x0=0;
+ int i=1,y=0;
+ printf("Enter a and b");
+ scanf("%f%f",&a,&b);
+ do
+ {
+  float fa=(a*a*a*a)-a-10;
+  float fb=(b*b*b*b)-10;
+  x=a-fa*(b-a)/(fb-fa);
+  printf("\n\n%d iteration:",i);
+  printf("\na=%f b=%f",a,b);
+  fx1=(x*x*x*x)-10;
+  if(fx1<0)
+  {
+   a=x;
+  }
+  else if(fx1>0)
+  {
+   b=x;
+  }
+  printf("\nx%d=%f",i,x);
+  printf("\nf(x%d)=%f",i,fx1);
+  printf("\nDifference of: x%d-x%d=%f",i,y,fabs(x-x0));
+  if(fabs(x-x0)<=0.02)
+  {
+      printf("\nReal root of equation is: %f",x);
+      break;
+  }
+  x0=x;
+  ++i;
+  ++y;
+ }while(fabs(x-x0)<=0.02);
+}
+                </textarea>
+            </div>
+            <div class="output-frame">
+                <h2>Output</h2>
+                <textarea readonly>
+Enter a and b1.5 2
+
+
+1 iteration:
+a=1.500000 b=2.000000
+x1=1.758794
+f(x1)=-0.431148
+Difference of: x1-x0=1.758794
+
+2 iteration:
+a=1.758794 b=2.000000
+x2=1.823291
+f(x2)=1.051571
+Difference of: x2-x1=0.064497
+
+3 iteration:
+a=1.758794 b=1.823291
+x3=1.802368
+f(x3)=0.552942
+Difference of: x3-x2=0.020923
+
+4 iteration:
+a=1.758794 b=1.802368
+x4=1.793584
+f(x4)=0.348718
+Difference of: x4-x3=0.008784
+Real root of equation is: 1.793584
+                </textarea>
+            </div>
+        </div>
+
+        <div class="code-output" id="code-output-3">
+            <div class="code-frame">
+                <h2>4. Code</h2>
+                <textarea readonly>
+//NEWTON RAPHSON METHOD
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+    float fx1,x0=0;
+    double x,x1,h=0.0001;  
+    double f_x,f_xh,d;
+    printf("Enter initial value of x to find the derivative:");
+    scanf("%lf",&x);
+    int i=1,y=0;
+    do
+    {
+        printf("\n%d iteration:",i);
+        f_x=x*x*x-2*x-5;
+        f_xh=(x+h)*(x+h)*(x+h)-2*(x+h)-5;
+        d=(f_xh-f_x)/h;
+        printf("\nThe derivative at x = %.2lf is: %.2lf",x,d);
+        printf("\nfx=%.2lf",f_x);
+        x=x-(f_x/d);
+        printf("\nx%d=%.2f",i,x);
+        printf("\nf(x%d)=%.2f",i,fx1);
+        printf("\nDifference of: x%d-x%d=%f\n",i,y,fabs(x-x0));
+        if(fabs(x-x0)<=0.02)
+        {
+            printf("\nReal root of equation is: %f",x);
+            break;
+        }
+        x0=x;
+        ++i;
+        ++y;
+    }while(fabs(x-x0)<=0.02);  
+}
+                </textarea>
+            </div>
+            <div class="output-frame">
+                <h2>Output</h2>
+                <textarea readonly>
+Enter initial value of x to find the derivative:2
+
+1 iteration:
+The derivative at x = 2.00 is: 10.00
+fx=-1.00
+x1=2.10
+f(x1)=0.00
+Difference of: x1-x0=2.099994
+
+2 iteration:
+The derivative at x = 2.10 is: 11.23
+fx=0.06
+x2=2.09
+f(x2)=0.00
+Difference of: x2-x1=0.005426
+
+Real root of equation is: 2.094568
+                </textarea>
+            </div>
+        </div>
+
+        <div class="code-output" id="code-output-4">
+            <div class="code-frame">
+                <h2>5. Code</h2>
+                <textarea readonly>
+//BIERGE VIETA METHOD
+#include<stdio.h>
+void main() 
+{
+    float p,p_new,a0,a1,a2,a3,b0,b1,b2,b3,c0,c1,c2,diff;
+    int i,iteration=4;
+    printf("Enter value of p:");
+    scanf("%f",&p);
+    printf("Enter coefficients of a0, a1, a2, a3:");
+    scanf("%f %f %f %f",&a0,&a1,&a2,&a3);
+    for(i=1;i<=iteration;i++) 
+    {
+        b0=a0;
+        b1=a1+p*b0;
+        b2=a2+p*b1;
+        b3=a3+p*b2;
+
+        c0=a0;
+        c1=b1+p*c0;
+        c2=b2+p*c1;
+        p_new=p-b3/c2;
+        printf("\n%d Iteration:",i);
+        printf("\np=%.2f,b3=%.2f,c2=%.2f",p,b3,c2);
+        printf("\np_new=%.2f",p_new);
+        diff = p_new - p;
+        printf("\nDifference: %.2f",diff);
+        p = p_new;
+    }
+
+    printf("\nReal root of equation is:%.2f",p);
+}
+                </textarea>
+            </div>
+            <div class="output-frame">
+                <h2>Output</h2>
+                <textarea readonly>
+Enter value of p:-0.5
+Enter coefficients of a0, a1, a2, a3:1 -1 0 1
+
+1 Iteration:
+p=-0.50,b3=0.62,c2=1.75
+p_new=-0.86
+Difference: -0.36
+2 Iteration:
+p=-0.86,b3=-0.36,c2=3.92
+p_new=-0.76
+Difference: 0.09
+3 Iteration:
+p=-0.76,b3=-0.03,c2=3.28
+p_new=-0.75
+Difference: 0.01
+4 Iteration:
+p=-0.75,b3=-0.00,c2=3.22
+p_new=-0.75
+Difference: 0.00
+Real root of equation is:-0.75
+                </textarea>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 My Stylish Website. All rights reserved.</p>
+        <a href="index.html">Back to Home</a>
+    </footer>
+
+    <script>
+        function toggleCode(index) {
+            const codeOutputs = document.querySelectorAll('.code-output');
+            codeOutputs.forEach((output, i) => {
+                output.style.display = (i === index && output.style.display !== "flex") ? "flex" : "none";
+            });
+        }
+
+        // Initially hide all code outputs
+        document.querySelectorAll('.code-output').forEach(output => {
+            output.style.display = "none";
+        });
+    </script>
+</body>
+</html>
